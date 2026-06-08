@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"os"
 	"time"
 
 	"book-rental-api/configs"
@@ -65,10 +66,22 @@ func RegisterUser(c echo.Context) error {
 // @Failure 401 {object} handlers.ResponseFailedLogin "Failed login error"
 // @Router /users/login [post]
 func LoginUser(c echo.Context) error {
+	var user models.User
+
+	// Bind request body to get email and password
+	if err := c.Bind(&user); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"message": "invalid request"})
+	}
+
+	// Verify user exists and password matches
+	var found models.User
+	if err := configs.DB.Where("email = ? AND password = ?", user.Email, user.Password).First(&found).Error; err != nil {
+		return c.JSON(http.StatusUnauthorized, map[string]string{"message": "invalid email or password"})
+	}
 
 	// Create JWT claims
 	claims := jwt.MapClaims{
-		"email": "carmen@gmail.com",
+		"email": found.Email,
 		"exp":   jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
 	}
 
@@ -76,18 +89,13 @@ func LoginUser(c echo.Context) error {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	// Sign token with secret key
-	signedToken, err := token.SignedString([]byte("secret"))
+	signedToken, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"message": "failed to generate token",
-		})
+		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "failed to generate token"})
 	}
 
 	// Return token in response
-	return c.JSON(http.StatusOK, map[string]string{
-		"message": "success login",
-		"token":   signedToken,
-	})
+	return c.JSON(http.StatusOK, map[string]string{"message": "success login", "token": signedToken})
 }
 
 // GetUserProfile returns logged-in user's profile
@@ -104,8 +112,8 @@ func LoginUser(c echo.Context) error {
 func GetUserProfile(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"full_name": "Carmen Nyoman",
-		"address":   "Bandung",
+		"full_name":     "Carmen Nyoman",
+		"address":       "Bandung",
 		"date_of_birth": "2000-08-09",
 	})
 }
