@@ -65,7 +65,8 @@ Aplikasi ini diharapkan mampu menghandle flow pelanggan untuk register, login, m
 - Pastikan untuk mengikuti best practice untuk penggunaan environment variable
 
 ## Expected Result
-- Web API dapat diakses pada : book-rental-api-production-bd46.up.railway.app
+- Web API dapat diakses pada : https://book-rental-api-production-bd46.up.railway.app/swagger/index.html
+
 - Web API memiliki endpoint sebagai berikut
   - <b>POST</b> /users/register
     - request body -> `{ first_name, last_name, address, email, password, date_of_birth }`
