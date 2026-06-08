@@ -65,7 +65,7 @@ Aplikasi ini diharapkan mampu menghandle flow pelanggan untuk register, login, m
 - Pastikan untuk mengikuti best practice untuk penggunaan environment variable
 
 ## Expected Result
-- Web API dapat diakses pada : https://book-rental-api-production-bd46.up.railway.app/swagger/index.html
+- Web API dapat diakses pada : https://book-rental-api-production-8c4a.up.railway.app/swagger/index.html
 
 - Web API memiliki endpoint sebagai berikut
   - <b>POST</b> /users/register
@@ -105,7 +105,7 @@ Deadline : Diinformasikan oleh instruktur saat briefing GC. Keterlambatan pengum
 Informasi yang tidak dicantumkan pada file ini harap dipastikan/ditanyakan kembali kepada instruktur. Kesalahan asumsi dari peserta mungkin akan menyebabkan kesalahan pemahaman requirement dan mengakibatkan pengurangan nilai.
 
 ### Deployment Notes
-- Deployed url: book-rental-api-production-bd46.up.railway.app
+- Deployed url: book-rental-api-production-8c4a.up.railway.app
 
 #### Book Rental
 REST API untuk sistem peminjaman buku menggunakan Golang, Echo Framework, GORM, PostgreSQL, JWT Authentication, dan Swagger Documentation.
