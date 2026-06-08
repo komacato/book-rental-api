@@ -65,7 +65,7 @@ Aplikasi ini diharapkan mampu menghandle flow pelanggan untuk register, login, m
 - Pastikan untuk mengikuti best practice untuk penggunaan environment variable
 
 ## Expected Result
-- Web API dapat diakses pada _________ (isi dengan url hasil deployment anda).
+- Web API dapat diakses pada : book-rental-api-production-bd46.up.railway.app
 - Web API memiliki endpoint sebagai berikut
   - <b>POST</b> /users/register
     - request body -> `{ first_name, last_name, address, email, password, date_of_birth }`
@@ -104,7 +104,7 @@ Deadline : Diinformasikan oleh instruktur saat briefing GC. Keterlambatan pengum
 Informasi yang tidak dicantumkan pada file ini harap dipastikan/ditanyakan kembali kepada instruktur. Kesalahan asumsi dari peserta mungkin akan menyebabkan kesalahan pemahaman requirement dan mengakibatkan pengurangan nilai.
 
 ### Deployment Notes
-- Deployed url: comingsoon (isi dengan url hasil deployment anda)
+- Deployed url: book-rental-api-production-bd46.up.railway.app
 
 #### Book Rental
 REST API untuk sistem peminjaman buku menggunakan Golang, Echo Framework, GORM, PostgreSQL, JWT Authentication, dan Swagger Documentation.

@@ -1,6 +1,8 @@
 package main
 
 import (
+    "os"
+
     "github.com/joho/godotenv"
     "github.com/labstack/echo/v4"
 	"github.com/swaggo/echo-swagger"
@@ -64,5 +66,9 @@ func main() {
 	e.POST("/loans", handlers.CreateLoan)
 
 	// Start server 
-	e.Logger.Fatal(e.Start(":8080"))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	e.Logger.Fatal(e.Start(":" + port))
 }
