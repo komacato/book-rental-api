@@ -1,0 +1,338 @@
+basePath: /
+definitions:
+  handlers.LoginUserRequest:
+    properties:
+      email:
+        example: carmen@gmail.com
+        type: string
+      password:
+        example: "12345678"
+        type: string
+    type: object
+  handlers.RegisterUserRequest:
+    properties:
+      date_of_birth:
+        example: "2002-01-01"
+        type: string
+      first_name:
+        example: Nyoman Ayu
+        type: string
+      last_name:
+        example: Carmenita
+        type: string
+      password:
+        example: "12345678"
+        type: string
+      username:
+        example: Carmen
+        type: string
+    type: object
+  handlers.ResponseBadRequest:
+    properties:
+      message:
+        example: name is required
+        type: string
+    type: object
+  handlers.ResponseFailedGetProfile:
+    properties:
+      message:
+        example: Failed get profile
+        type: string
+    type: object
+  handlers.ResponseFailedLogin:
+    properties:
+      message:
+        example: Failed login
+        type: string
+    type: object
+  handlers.ResponseFailedUpdateProfile:
+    properties:
+      message:
+        example: Failed update profile
+        type: string
+    type: object
+  handlers.ResponseInternalServerError:
+    properties:
+      detail:
+        example: error generated from err.Error() object
+        type: string
+      message:
+        example: internal server error
+        type: string
+    type: object
+  handlers.ResponseSuccessGetProfile:
+    properties:
+      message:
+        example: success get profile
+        type: string
+      user:
+        properties:
+          date_of_birth:
+            example: "2002-01-01"
+            type: string
+          first_name:
+            example: Nyoman Ayu
+            type: string
+          id:
+            example: 1
+            type: integer
+          last_name:
+            example: Carmenita
+            type: string
+          username:
+            example: Carmen
+            type: string
+        type: object
+    type: object
+  handlers.ResponseSuccessLogin:
+    properties:
+      message:
+        example: success login
+        type: string
+      token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2ODg4ODQ4MDB9.3n8sKZl7j8mLh0v5z5z5z5z5z5z5z5z5z5z5z5z5z5z5z5z5z5z5z5z5z5z5
+        type: string
+    type: object
+  handlers.ResponseSuccessRegister:
+    properties:
+      message:
+        example: success register
+        type: string
+      user:
+        $ref: '#/definitions/handlers.UserRegisterResponse'
+    type: object
+  handlers.ResponseSuccessUpdateProfile:
+    properties:
+      message:
+        example: success update profile
+        type: string
+      user:
+        properties:
+          date_of_birth:
+            example: "2002-01-01"
+            type: string
+          first_name:
+            example: Nyoman Ayu
+            type: string
+          id:
+            example: 1
+            type: integer
+          last_name:
+            example: Carmenita
+            type: string
+          username:
+            example: Carmen
+            type: string
+        type: object
+    type: object
+  handlers.UserRegisterResponse:
+    properties:
+      age:
+        example: 22
+        type: integer
+      full_name:
+        example: Nyoman Ayu Carmenita
+        type: string
+      username:
+        example: Carmen
+        type: string
+    type: object
+  models.Author:
+    properties:
+      firstName:
+        type: string
+      id:
+        type: integer
+      lastName:
+        type: string
+    type: object
+  models.Book:
+    properties:
+      author:
+        $ref: '#/definitions/models.Author'
+      authorID:
+        type: integer
+      coverURL:
+        type: string
+      description:
+        type: string
+      genre:
+        $ref: '#/definitions/models.Genre'
+      genreID:
+        type: integer
+      id:
+        type: integer
+      minAgeRestriction:
+        type: integer
+      title:
+        type: string
+    type: object
+  models.Genre:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  models.Loan:
+    properties:
+      book:
+        $ref: '#/definitions/models.Book'
+      bookID:
+        type: integer
+      dueDate:
+        type: string
+      id:
+        type: integer
+      loanDate:
+        type: string
+      user:
+        $ref: '#/definitions/models.User'
+      userID:
+        type: integer
+    type: object
+  models.User:
+    properties:
+      address:
+        type: string
+      date_of_birth:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      loans:
+        items:
+          $ref: '#/definitions/models.Loan'
+        type: array
+      password:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Book Rental REST API
+  title: Book Rental API
+  version: "1.0"
+paths:
+  /books:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all books from library
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Book'
+            type: array
+      summary: Get all books
+      tags:
+      - Books
+  /loans:
+    post:
+      consumes:
+      - application/json
+      description: membuat/menyimpan data peminjaman buku
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Loan'
+      summary: Create a new loan
+      tags:
+      - Books
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: Login user yang sudah terdaftar
+      parameters:
+      - description: Login user
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.LoginUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response berhasil login user
+          schema:
+            $ref: '#/definitions/handlers.ResponseSuccessLogin'
+        "401":
+          description: Failed login error
+          schema:
+            $ref: '#/definitions/handlers.ResponseFailedLogin'
+      summary: User login
+      tags:
+      - Users
+  /users/profile:
+    get:
+      consumes:
+      - application/json
+      description: Menampilkan informasi user yang sedang login
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response berhasil mendapatkan profile user
+          schema:
+            $ref: '#/definitions/handlers.ResponseSuccessGetProfile'
+        "401":
+          description: Failed get profile error
+          schema:
+            $ref: '#/definitions/handlers.ResponseFailedGetProfile'
+        "503":
+          description: Response berhasil update profile user
+          schema:
+            $ref: '#/definitions/handlers.ResponseSuccessUpdateProfile'
+        "504":
+          description: Failed update profile error
+          schema:
+            $ref: '#/definitions/handlers.ResponseFailedUpdateProfile'
+      summary: Get user profile
+      tags:
+      - Users
+  /users/register:
+    post:
+      consumes:
+      - application/json
+      description: Register user baru
+      parameters:
+      - description: Register user baru
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.RegisterUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Response berhasil register user baru
+          schema:
+            $ref: '#/definitions/handlers.ResponseSuccessRegister'
+        "400":
+          description: Bad request error
+          schema:
+            $ref: '#/definitions/handlers.ResponseBadRequest'
+        "500":
+          description: Internal server error; semua error lain seperti error bad request
+            dan error not found masuk ke sini
+          schema:
+            $ref: '#/definitions/handlers.ResponseInternalServerError'
+      summary: Register a new user
+      tags:
+      - Users
+swagger: "2.0"
